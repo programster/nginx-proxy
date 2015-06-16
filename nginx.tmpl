@@ -114,6 +114,14 @@ server {
 	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
 	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
 	{{ end }}
+	
+	
+    {{ range $container := $containers }}
+        {{ if $container.Env.ALLOW_CROSS_DOMAIN_REQUESTS }}
+            include /root/app/cors_support;
+        {{ end }}
+    {{ end }}
+	
 
 	location / {
 		proxy_pass {{ $proto }}://{{ $host }};
@@ -140,6 +148,12 @@ server {
 	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
 	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
 	{{ end }}
+	
+	{{ range $container := $containers }}
+        {{ if $container.Env.ALLOW_CROSS_DOMAIN_REQUESTS }}
+            include /root/app/cors_support;
+        {{ end }}
+    {{ end }}
 
 	location / {
 		proxy_pass {{ $proto }}://{{ $host }};
