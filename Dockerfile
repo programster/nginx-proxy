@@ -1,13 +1,8 @@
-FROM nginx:1.9.0
-MAINTAINER Jason Wilder jwilder@litl.com
+FROM ubuntu:trusty
+MAINTAINER Stuart Page sdpagent@gmail.com
 
 # Install wget and install/updates certificates
-RUN apt-get update \
- && apt-get install -y -q --no-install-recommends \
-    ca-certificates \
-    wget \
- && apt-get clean \
- && rm -r /var/lib/apt/lists/*
+RUN apt-get update && apt-get install nginx-extras wget cron -y
 
 # Configure Nginx and apply fix for very long server names
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
@@ -28,6 +23,17 @@ WORKDIR /app/
 
 ENV DOCKER_HOST unix:///tmp/docker.sock
 
+# Define mountable directories (taken from nginx dockerfile)
+VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
+
+# Define working directory.
+WORKDIR /etc/nginx
+
 VOLUME ["/etc/nginx/certs"]
 
-CMD ["forego", "start", "-r"]
+# Expose ports.
+EXPOSE 80
+EXPOSE 443
+
+ADD startup.sh /root/startup.sh
+CMD ["/bin/bash", "/root/startup.sh"]

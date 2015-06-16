@@ -1,3 +1,14 @@
+This is forked version of nginx-proxy.
+
+Main differences
+* uses nginx-extras from ubuntu repositories rather than disabling the repositories and installing from a PPA.
+* uses the cron service to tie up the docker foreground process instead of switching deaemon mode of nginx off, so you can restart the nginx service.
+* Accepts CORS requests through the proxy.
+
+------------
+
+# Nginx Proxy
+
 ![nginx 1.9.0](https://img.shields.io/badge/nginx-1.9.0-brightgreen.svg) ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 nginx-proxy sets up a container running nginx and [docker-gen][1].  docker-gen generates reverse proxy configs for nginx and reloads nginx when containers are started and stopped.
