@@ -1,5 +1,5 @@
 # Run dockergen
-docker-gen -watch -only-exposed -notify "nginx -s reload" /app/nginx.tmpl /etc/nginx/conf.d/default.conf
+docker-gen -watch -only-exposed -notify "nginx -s reload" /root/app/nginx.tmpl /etc/nginx/conf.d/default.conf
 
 # Start the nginx service
 service nginx restart
